@@ -1,13 +1,7 @@
 <?php
 
 class Tarot 
-{
-
-	public $id;
-	public $title;
-	public $desc;
-	public $photo;
-
+{ 
 	public $db;
 
 	function __construct(PDO $db)
@@ -40,7 +34,34 @@ class Tarot
 		} catch (PDOException $e) { 
 		    throw $e;
 		}
+	}
 
+	public function update($id, $data)
+	{
+		try { 
+			$sql = "UPDATE tarots SET \n";
+			foreach($data as $key => $value){
+				$sql .= "$key = '$value',";
+			}
+			$sql = rtrim($sql, ",") . "\n";
+			$sql .= "WHERE id = $id";
+		    $stmt = $this->db->prepare($sql);
+
+		    return $stmt->execute($data);
+		} catch (PDOException $e) { 
+		    throw $e;
+		}
+	}
+
+	public function deleteById($id)
+	{
+		try{
+			$stmt = $this->db->prepare("DELETE FROM tarots WHERE id = ?");
+			return $stmt->execute([$id]);
+	    	return $stmt->execute($data);
+		} catch (PDOException $e) { 
+		    throw $e;
+		}
 	}
 
 }
