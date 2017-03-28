@@ -1,7 +1,7 @@
 <?php
 
-class Tarot 
-{ 
+class Tarot
+{
 	public $db;
 
 	function __construct(PDO $db)
@@ -26,30 +26,30 @@ class Tarot
 	public function add($data)
 	{
 		try {
-	        $keys = array_keys($data);
-		    $sql = "INSERT INTO tarots (".implode(", ",$keys).") \n";
-		    $sql .= "VALUES ( :".implode(", :",$keys).")";        
-		    $stmt = $this->db->prepare($sql);
-		    return $stmt->execute($data);
-		} catch (PDOException $e) { 
-		    throw $e;
+			$keys = array_keys($data);
+			$sql = "INSERT INTO tarots (".implode(", ",$keys).") \n";
+			$sql .= "VALUES ( :".implode(", :",$keys).")";
+			$stmt = $this->db->prepare($sql);
+			return $stmt->execute($data);
+		} catch (PDOException $e) {
+			throw $e;
 		}
 	}
 
 	public function update($id, $data)
 	{
-		try { 
+		try {
 			$sql = "UPDATE tarots SET \n";
 			foreach($data as $key => $value){
 				$sql .= "$key = '$value',";
 			}
 			$sql = rtrim($sql, ",") . "\n";
 			$sql .= "WHERE id = $id";
-		    $stmt = $this->db->prepare($sql);
+			$stmt = $this->db->prepare($sql);
 
-		    return $stmt->execute($data);
-		} catch (PDOException $e) { 
-		    throw $e;
+			return $stmt->execute($data);
+		} catch (PDOException $e) {
+			throw $e;
 		}
 	}
 
@@ -58,9 +58,9 @@ class Tarot
 		try{
 			$stmt = $this->db->prepare("DELETE FROM tarots WHERE id = ?");
 			return $stmt->execute([$id]);
-	    	return $stmt->execute($data);
-		} catch (PDOException $e) { 
-		    throw $e;
+			return $stmt->execute($data);
+		} catch (PDOException $e) {
+			throw $e;
 		}
 	}
 
