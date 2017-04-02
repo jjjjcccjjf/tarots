@@ -18,9 +18,9 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
-$container['db'] = function ($container) {
+$container['db'] = function ($c) {
     $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($container['settings']['db']);
+    $capsule->addConnection($c['settings']['db']);
 
     $capsule->setAsGlobal();
     $capsule->bootEloquent();

@@ -1,6 +1,18 @@
 <?php
 // Routes
 
+$app->get('/', function ($request, $response, $args) {
+
+  $table = $this->db->table('tarots')->get();
+
+  $response->getBody()->write(var_dump($table));
+  return $response;
+
+  // Render index view
+  // return $this->renderer->render($response, 'index.phtml', $args);
+});
+
+
 $app->get('/tarots', function ($request, $response, $args) {
   // Sample log message
   // $this->logger->info("Slim-Skeleton '/' route");
