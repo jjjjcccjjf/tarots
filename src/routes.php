@@ -1,84 +1,76 @@
 <?php
-// Routes
 
+// Routes
 $app->get('/', function ($request, $response, $args) {
 
-  $table = $this->db->table('tarots')->get();
-
-  $response->getBody()->write(var_dump($table));
-  return $response;
+  $T = new \Crud($this->db);
+  $data = $T->all();
 
   // Render index view
-  // return $this->renderer->render($response, 'index.phtml', $args);
+  return $this->renderer->render($response, 'index.phtml', [
+    'tarots' => $data
+  ]);
 });
 
 
 $app->get('/tarots', function ($request, $response, $args) {
-  // Sample log message
-  // $this->logger->info("Slim-Skeleton '/' route");
 
-  $T = new Tarot($this->db);
-  $tarots = $T->getAll();
+  $T = new Crud($this->db);
+  $data = $T->getAll();
 
-  $response->getBody()->write(var_dump($tarots));
+  $response->getBody()->write(var_dump(data));
   return $response;
 
-  // Render index view
-  // return $this->renderer->render($response, 'index.phtml', $args);
 });
 
 
-$app->get('/tarot/{id}', function ($request, $response, $args) {
+$app->get('/users/{id}', function ($request, $response, $args) {
 
-  $T = new Tarot($this->db);
-  $tarots = $T->get($args['id']);
+  $T = new Crud($this->db);
+  $data = $T->get($args['id']);
 
-  $response->getBody()->write(var_dump($tarots));
+  $response->getBody()->write(var_dump($data));
   return $response;
 
-  // Render index view
-  // return $this->renderer->render($response, 'index.phtml', $args);
 });
 
-$app->put('/tarot/{id}', function ($request, $response, $args) {
+$app->patch('/tarots/{id}', function ($request, $response, $args) {
 
   $data = $request->getParsedBody();
-  $args['id'] = filter_var($args['id'], FILTER_SANITIZE_STRING);
+  $id = filter_var($args['id'], FILTER_SANITIZE_STRING);
 
-  $T = new Tarot($this->db);
-
-  $result = $T->update($args['id'], $data);
+  $T = new Crud($this->db);
+  $result = $T->update($id, $data);
 
   return $response->getBody()->write(var_dump($result));
+
 });
 
-$app->delete('/tarot/{id}', function ($request, $response, $args) {
+$app->delete('/tarots/{id}', function ($request, $response, $args) {
 
-  $args['id'] = filter_var($args['id'], FILTER_SANITIZE_STRING);
+  $id = filter_var($args['id'], FILTER_SANITIZE_STRING);
 
-  $T = new Tarot($this->db);
-  $result = $T->deleteById($args['id']);
+  $T = new Crud($this->db);
+  $result = $T->delete($args['id']);
 
   return $response->getBody()->write(var_dump($result));
 });
 
 
-$app->post('/tarot/new', function ($request, $response, $args) {
+$app->post('/tarots/new', function ($request, $response, $args) {
 
   $data = $request->getParsedBody();
 
-  $T = new Tarot($this->db);
+  $T = new Crud($this->db);
 
-  $tarot_data = [];
-  $tarot_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
-  $tarot_data['description'] = filter_var($data['description'], FILTER_SANITIZE_STRING);
-  $tarot_data['photo'] = filter_var($data['photo'], FILTER_SANITIZE_STRING);
+  $insert_data = [];
+  foreach($data as $key => $val){
+    $insert_data[$key] = filter_var($val, FILTER_SANITIZE_STRING);
+  }
 
-  $result = $T->add($tarot_data);
+  $result = $T->add($insert_data);
 
   $response->getBody()->write(var_dump($result));
   return $response;
 
-  // Render index view
-  // return $this->renderer->render($response, 'index.phtml', $args);
 });

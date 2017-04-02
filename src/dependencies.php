@@ -18,6 +18,7 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+// eloquent
 $container['db'] = function ($c) {
     $capsule = new \Illuminate\Database\Capsule\Manager;
     $capsule->addConnection($c['settings']['db']);
