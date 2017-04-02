@@ -16,10 +16,14 @@ return [
       'level' => \Monolog\Logger::DEBUG,
     ],
     'db' => [
+      'driver' => 'mysql',
       'host' => 'localhost',
-      'user' => 'root',
-      'pass' => 'root',
-      'dbname' => 'scotchbox',
-    ],
+      'database' => 'scotchbox',
+      'username' => 'root',
+      'password' => 'root',
+      'charset'   => 'utf8',
+      'collation' => 'utf8_unicode_ci',
+      'prefix'    => '',
+    ]
   ],
 ];
